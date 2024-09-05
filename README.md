@@ -789,3 +789,603 @@ public class Main {
 }
 ```
 
+### Mutable vs Immutable objects in Java
+
+The terms mutable and immutable refer to whether an object’s state can be changed after it is created.
+
+	•	Mutable objects: Objects whose state or data can be changed after creation.
+	•	Immutable objects: Objects whose state or data cannot be changed after creation.
+
+**Immutable Objects**
+
+An immutable object is an object whose state cannot be modified after it is created. Any attempt to change the object 
+results in the creation of a new object, leaving the original object unchanged.
+
+In Java, the most common example of an immutable class is the String class. Once a String object is created, it 
+cannot be changed. Any operation that appears to modify a string (like concatenation) actually creates a new String object.
+
+_Key Characteristics of Immutable Objects:_
+
+	1.	No State Change: Once the object is created, its state (data) cannot be altered.
+	2.	Thread-Safe: Immutable objects are inherently thread-safe because their state cannot change. They can be shared between multiple threads without synchronization.
+	3.	Final Fields: Immutable objects usually have all fields declared as final, meaning they cannot be reassigned once initialized.
+	4.	New Object Creation: Any operation that would modify the object instead creates a new object.
+
+Examples of Immutable Classes:
+
+	•	String
+	•	Wrapper classes like Integer, Double, Boolean
+	•	LocalDate, LocalTime, and other classes in the java.time package
+
+```java
+public class ImmutableExample {
+    public static void main(String[] args) {
+        String str = "Hello";
+        
+        // This operation doesn't modify 'str' but creates a new string
+        str = str.concat(" World");
+        
+        System.out.println(str);  // Output: "Hello World"
+    }
+}
+```
+In the above example:
+- The string str originally holds "Hello".
+- The concat() method doesn’t change the original string but returns a new String object "Hello World".
+- The reference str now points to the new object.
+
+**Mutable Objects**
+
+A mutable object is an object whose state can be changed after it is created. This means that the fields (data) of the 
+object can be modified, added to, or removed without needing to create a new object.
+
+Many built-in Java classes are mutable, such as ArrayList, HashMap, StringBuilder, and user-defined classes with setter methods.
+
+_Key Characteristics of Mutable Objects:_
+
+	1.	State Change: Mutable objects can have their state (data) changed after creation.
+	2.	Not Thread-Safe: Mutable objects are not inherently thread-safe, meaning that if multiple threads modify an object simultaneously, data inconsistency can occur unless proper synchronization is used.
+	3.	Setter Methods: Mutable objects typically have setter methods that allow the modification of their fields.
+
+StringBuilder example:
+```java
+public class MutableExample {
+    public static void main(String[] args) {
+        StringBuilder sb = new StringBuilder("Hello");
+        
+        // Modifying the StringBuilder object in place
+        sb.append(" World");
+        
+        System.out.println(sb);  // Output: "Hello World"
+    }
+}
+```
+StringBuffer example:
+```java
+public class StringBufferExample {
+    public static void main(String[] args) {
+        StringBuffer sb = new StringBuffer("Hello");
+
+        // Append operation
+        sb.append(" World!");
+        System.out.println(sb);  // Output: Hello World!
+
+        // Insert operation
+        sb.insert(5, " Java");
+        System.out.println(sb);  // Output: Hello Java World!
+
+        // Delete operation
+        sb.delete(5, 10);
+        System.out.println(sb);  // Output: Hello World!
+
+        // Reverse operation
+        sb.reverse();
+        System.out.println(sb);  // Output: !dlroW olleH
+    }
+}
+```
+
+### StringBuilder vs StringBuffer
+
+Both StringBuilder and StringBuffer are classes used to create and manipulate mutable strings. They are similar in 
+many ways, but they have key differences related to thread safety and performance.
+
+| StringBuilder | StringBuffer |
+|-------------- |:------------ |
+|Not thread-safe (no synchronization).|Thread-safe (methods are synchronized).|
+|Faster (better for single-threaded applications).|Slower (due to synchronization overhead).|
+|Use when thread safety is not a concern.|Use when thread safety is required.|
+
+**_When to Use StringBuilder_**
+</br>
+Use StringBuilder in scenarios where you are working in a single-threaded environment or when thread safety is not 
+required. Since StringBuilder methods are not synchronized, it provides better performance than StringBuffer because 
+there is no overhead of acquiring and releasing locks.
+
+**_When to Use StringBuffer_**
+</br>
+Use StringBuffer when you are working in a multithreaded environment and need to ensure that multiple threads can 
+safely access and modify the same string. The methods in StringBuffer are synchronized, which ensures thread safety 
+but comes with a performance cost.
+
+_**Performance Comparison**_
+- StringBuilder is faster than StringBuffer in single-threaded programs because it doesn’t incur the overhead of synchronization.
+- StringBuffer should be used when the same string may be accessed or modified by multiple threads simultaneously, ensuring thread safety.
+<hr>
+
+### OOP in Java ###
+
+The four main principles of OOP are:
+
+> 1.	Encapsulation
+> 2.	Abstraction
+> 3.	Inheritance
+> 4.	Polymorphism
+
+##### 1. Encapsulation 
+**Encapsulation** is the mechanism of bundling data (variables) and methods (functions) that operate on the data into a 
+single unit or class. It also involves restricting access to some of the object’s components to maintain control over 
+the data, which helps protect the integrity of the object. This is typically done using access modifiers like private, 
+public, and protected.
+
+Encapsulation allows you to:
+
+> - Hide the internal implementation details of an object.
+> - Control access to the data by exposing getter and setter methods.
+
+```java
+public class Person {
+    // Private fields (encapsulation)
+    private String name;
+    private int age;
+
+    // Constructor to initialize fields
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    // Getter for name
+    public String getName() {
+        return name;
+    }
+
+    // Setter for name
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // Getter for age
+    public int getAge() {
+        return age;
+    }
+
+    // Setter for age
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    // Method to display person info
+    public void displayInfo() {
+        System.out.println("Name: " + name + ", Age: " + age);
+    }
+}
+```
+
+In this example, the Person class encapsulates the name and age attributes by making them private, and provides public 
+methods (getName, setName, etc.) to access and modify them.
+
+##### 2. Abstraction
+
+**Abstraction** is the process of hiding the implementation details and showing only the functionality to the user. 
+It focuses on what an object does rather than how it does it. Abstraction can be achieved in Java using abstract 
+classes and interfaces.
+
+Abstract Classes: 
+> Classes that cannot be instantiated and may contain abstract methods (methods without implementation). 
+> Subclasses of abstract classes must provide the implementation for these abstract methods.
+
+Interfaces: 
+> A collection of abstract methods that a class can implement. 
+> Interfaces provide complete abstraction since they do not contain any concrete methods.
+
+```java
+// Defining an interface
+interface Animal {
+    void sound();  // Abstract method
+}
+
+// Implementing the interface in the Dog class
+class Dog implements Animal {
+    public void sound() {
+        System.out.println("Dog barks");
+    }
+}
+
+// Implementing the interface in the Cat class
+class Cat implements Animal {
+    public void sound() {
+        System.out.println("Cat meows");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal dog = new Dog();
+        dog.sound();  // Output: Dog barks
+
+        Animal cat = new Cat();
+        cat.sound();  // Output: Cat meows
+    }
+}
+```
+
+In this example, Animal is an interface that abstracts the concept of an animal sound. The classes Dog and Cat 
+implement this interface by providing their own specific implementations of the sound() method.
+
+##### 3. Inheritance
+
+**Inheritance** is a mechanism in OOP where one class (the subclass or derived class) inherits the fields and methods 
+of another class (the superclass or base class). It allows for code reusability and helps create a hierarchical 
+relationship between classes.
+
+In Java, inheritance is achieved using the **_extends_** keyword. The subclass inherits all non-private fields and 
+methods of the superclass and can add its own fields and methods or override existing ones.
+
+```java
+// Base class (Parent class)
+class Animal {
+    protected String name;
+
+    public void eat() {
+        System.out.println(name + " is eating.");
+    }
+}
+
+// Derived class (Child class)
+class Dog extends Animal {
+    public Dog(String name) {
+        this.name = name;
+    }
+
+    // Overriding the eat method
+    @Override
+    public void eat() {
+        System.out.println(name + " is eating dog food.");
+    }
+
+    public void bark() {
+        System.out.println(name + " is barking.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog("Buddy");
+        dog.eat();    // Output: Buddy is eating dog food.
+        dog.bark();   // Output: Buddy is barking.
+    }
+}
+```
+
+In this example, the Dog class inherits the name field and the eat() method from the Animal class. The Dog class 
+overrides the eat() method to provide its own specific behavior and adds a new method bark().
+
+##### 4. Polymorphism
+
+**Polymorphism** allows one entity (such as a method or an object) to take multiple forms. It can be achieved in Java in two ways:
+
+> 1. _**Method Overloading**_ (Compile-time Polymorphism): Allows multiple methods in the same class to have the same name 
+> but different parameter lists (signature).
+> 2. **_Method Overriding_** (Run-time Polymorphism): Allows a subclass to provide a specific implementation for a 
+> method that is already defined in its superclass.
+<hr>
+
+### Method Overloading vs Method Overriding
+
+Method overloading and method overriding are two ways to achieve polymorphism, but they work differently. 
+They both allow methods to share the same name but have different purposes, behaviors, and rules for how they are implemented.
+
+#### **Method Overloading**
+
+Method overloading allows a class to have multiple methods with the same name but different parameter lists. 
+It is an example of compile-time polymorphism (or static polymorphism), meaning that the method to be called is 
+determined at compile time based on the method signature.
+
+Rules for Method Overloading:
+
+> - Methods must have the same name.
+> - Methods must have different parameters (either in number, type, or order of parameters).
+> - Methods can have different return types.
+> - Methods can have different access modifiers and exception handling.
+
+```java
+class Calculator {
+    // Overloaded methods with different parameter types
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public double add(double a, double b) {
+        return a + b;
+    }
+
+    // Overloaded methods with different numbers of parameters
+    public int add(int a, int b, int c) {
+        return a + b + c;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Calculator calc = new Calculator();
+        
+        System.out.println(calc.add(10, 20));       // Calls add(int, int), Output: 30
+        System.out.println(calc.add(10.5, 20.5));   // Calls add(double, double), Output: 31.0
+        System.out.println(calc.add(1, 2, 3));      // Calls add(int, int, int), Output: 6
+    }
+}
+```
+
+In this example, the add() method is overloaded with different parameter types and numbers. Depending on the arguments 
+passed, the appropriate method is called at compile time.
+
+#### Method Overriding
+
+Method overriding allows a subclass to provide a specific implementation of a method that is already defined in its 
+parent class. It is an example of run-time polymorphism (or dynamic polymorphism), meaning that the method to be called 
+is determined at runtime based on the type of the object.
+
+Rules for Method Overriding:
+
+> - The method in the subclass must have the same name, same parameter list, and same return type 
+> (or a covariant return type) as the method in the parent class.
+> - The overriding method cannot have a more restrictive access modifier than the overridden method 
+> (e.g., if the parent method is public, the overridden method must also be public).
+> - The overriding method can throw fewer or no exceptions, but not more checked exceptions than the parent method.
+> - Only instance methods can be overridden, not static or final methods.
+> - The @Override annotation is optional but recommended to ensure that the method is correctly overriding a method from the parent class.
+
+```java
+class Animal {
+    // Method to be overridden
+    public void sound() {
+        System.out.println("Animal makes a sound");
+    }
+}
+
+class Dog extends Animal {
+    // Overriding the sound method in the Dog class
+    @Override
+    public void sound() {
+        System.out.println("Dog barks");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal animal = new Animal();
+        Animal dog = new Dog();  // Polymorphism: Animal reference, Dog object
+        
+        animal.sound();  // Calls Animal's sound method, Output: Animal makes a sound
+        dog.sound();     // Calls Dog's sound method, Output: Dog barks
+    }
+}
+```
+
+In this example, the Dog class overrides the sound() method of the Animal class. The method to be executed depends on 
+the object type at runtime, demonstrating runtime polymorphism.
+
+**_Conclusion_**
+
+- Method overloading is used when you want the same method to perform different tasks based on different parameter 
+types or numbers. It is a compile-time feature and provides flexibility for multiple use cases within the same class.
+- Method overriding is used when you want to redefine a method in a subclass to give it a specific behavior. It is a 
+runtime feature that supports polymorphism and allows the subclass to provide a specific implementation for a method 
+already defined in the parent class.
+
+<hr>
+
+## Exceptions
+
+**Exceptions** are events that disrupt the normal flow of the program’s execution. They are objects that represent an 
+error or an unexpected event. Exceptions provide a way to transfer control from one part of a program to another and 
+handle errors or other exceptional conditions that occur during runtime.
+
+Java uses an exception-handling mechanism that allows developers/sdets to handle errors gracefully without crashing 
+the program. It also encourages writing robust code that can handle unexpected scenarios.
+
+#### Types of Exceptions in Java
+Java has a rich hierarchy of exceptions, and they can be categorized into three main types:
+
+> 1. Checked Exceptions (Compile-time exceptions)
+> 2. Unchecked Exceptions (Runtime exceptions)
+> 3. Errors
+
+#### 1. Checked Exceptions
+
+Checked exceptions are exceptions that are checked by the compiler at compile-time. These are typically external factors 
+beyond the program’s control, such as file I/O operations or database access. If a method throws a checked exception, 
+the calling method must handle it using a try-catch block or declare it in the method signature using the **throws** keyword.
+
+Common Examples of Checked Exceptions:
+
+	•	IOException
+	•	SQLException
+	•	FileNotFoundException
+	•	ClassNotFoundException
+Example:
+###### _006_Exceptions
+
+#### 2. Unchecked Exceptions
+
+Unchecked exceptions are exceptions that are not checked by the compiler at compile-time. They occur during runtime, 
+and handling them is optional. These exceptions typically indicate programming bugs or logical errors such as division 
+by zero or accessing an invalid array index. Unchecked exceptions are subclasses of RuntimeException.
+
+Common Examples of Unchecked Exceptions:
+
+	•	NullPointerException
+	•	ArrayIndexOutOfBoundsException
+	•	ArithmeticException
+	•	IllegalArgumentException
+
+#### 3. Errors
+
+Errors represent serious problems that are usually outside the control of the program, such as system failures or 
+resource exhaustion. They are subclasses of Error and are not meant to be caught or handled by the application. 
+Examples include stack overflow errors and out-of-memory errors. Errors are generally unrecoverable and indicate 
+that the program should terminate.
+
+Common Examples of Errors:
+
+	•	OutOfMemoryError
+	•	StackOverflowError
+	•	VirtualMachineError
+
+<hr>
+
+### Exception Handling Mechanism
+Java provides a structured way to handle exceptions using a combination of keywords: 
+_try, catch, finally, throw,_ and _throws_.
+
+#### 1. try-catch Block
+
+A try-catch block is used to handle exceptions. The code that may throw an exception is placed inside the try block, 
+and the catch block handles the exception.
+```java
+try {
+    // Code that may throw an exception
+} catch (ExceptionType e) {
+    // Code to handle the exception
+}
+```
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        try {
+            int result = 10 / 0;  // This will cause ArithmeticException
+        } catch (ArithmeticException e) {
+            System.out.println("Cannot divide by zero: " + e.getMessage());
+        }
+    }
+}
+```
+
+#### 2. finally Block
+
+The finally block is optional and is used to execute code that must run regardless of whether an exception was thrown 
+or not. It is commonly used to release resources like file handles, database connections, or sockets.
+
+```java
+try {
+    // Code that may throw an exception
+} catch (ExceptionType e) {
+    // Code to handle the exception
+} finally {
+    // Code that always executes, even if an exception occurs
+}
+```
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        try {
+            int result = 10 / 0;
+        } catch (ArithmeticException e) {
+            System.out.println("Cannot divide by zero.");
+        } finally {
+            System.out.println("This block always executes.");
+        }
+    }
+}
+```
+
+#### 3. throw Keyword
+The throw keyword is used to explicitly throw an exception. It is often used in custom exception handling.
+
+```java
+throw new ExceptionType("Error message");
+```
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        int age = 15;
+
+        if (age < 18) {
+            throw new IllegalArgumentException("Age must be 18 or older.");
+        }
+
+        System.out.println("Age is valid.");
+    }
+}
+```
+In this example, an IllegalArgumentException is explicitly thrown if the age is less than 18.
+
+#### 4. throws Keyword
+The throws keyword is used in method signatures to indicate that the method might throw one or more exceptions. This 
+is commonly used for checked exceptions, and the caller of the method is responsible for handling the exception.
+
+```java
+public void methodName() throws ExceptionType1, ExceptionType2 {
+    // Method code
+}
+```
+
+```java
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class Main {
+    public static void readFile() throws FileNotFoundException {
+        File file = new File("non_existent_file.txt");
+        Scanner reader = new Scanner(file);
+    }
+
+    public static void main(String[] args) {
+        try {
+            readFile();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.getMessage());
+        }
+    }
+}
+```
+In this example, the readFile() method declares that it throws a FileNotFoundException, and the caller (main method) 
+is responsible for handling the exception.
+
+#### Exception Hierarchy in Java
+
+All exceptions and errors in Java are subclasses of the Throwable class. The Throwable class has two main subclasses:
+
+> 1. _Exception_: This class is used for exceptional conditions that applications might want to catch. It has two main categories:
+>	- Checked Exceptions: Subclasses of Exception (except RuntimeException).
+>	- Unchecked Exceptions: Subclasses of RuntimeException.
+> 2. _Error_: Errors indicate serious problems that a reasonable application should not try to catch, such as OutOfMemoryError or StackOverflowError.
+
+<hr>
+
+### Top Java Coding Interview Questions for SDET
+https://beknazarsuranchiyev.medium.com/top-17-java-coding-interview-questions-for-sdet-a978754eb078
+
+1. String reverse
+2. Array reverse
+3. Reverse words
+4. Prime numbers
+5. String palindrome
+6. Number palindrome
+7. Max/Min number from an array
+8. Find the second min/max number from an array
+9. Swap values of two variables
+10. Two-string anagram
+11. Remove duplicate letters from a string
+12. Count how many times each letter was repeated in a sentence/word
+13. FizzBuzz
+14. Even or Odd number
+15. Sum of two
+16. The fibonacci
+17. Balanced String
+18. Sort an array without using sort methods
